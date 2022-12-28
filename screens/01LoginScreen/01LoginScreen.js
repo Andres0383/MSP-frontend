@@ -88,7 +88,7 @@ export default function LoginScreen({ navigation }) {
   const handleSignIn = () => {
     const body = { email: signInMail, password: signInPassword };
     if (EMAIL_REGEX.test(signInMail)) {
-      fetch("https://msp-backend.vercel.app/users/signin", {
+      fetch("https://msp-backend-gold.vercel.app/users/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -116,7 +116,7 @@ export default function LoginScreen({ navigation }) {
 
   const handleSignUp = () => {
     if (EMAIL_REGEX.test(signUpMail)) {
-      fetch("https://msp-backend.vercel.app/users/signup", {
+      fetch("https://msp-backend-gold.vercel.app/users/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
