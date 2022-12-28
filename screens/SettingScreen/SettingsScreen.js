@@ -27,7 +27,7 @@ export default function SettingScreen({ navigation }) {
     const body = {
       token: user.token,
     };
-    fetch("https://msp-backend.vercel.app/users/delete", {
+    fetch("https://msp-backend-gold.vercel.app/users/delete", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -44,7 +44,7 @@ export default function SettingScreen({ navigation }) {
   };
 
   const handleEditProfile = () => {
-    navigation.navigate("Quizz");
+    navigation.navigate("EditProfile");
   };
 
   return (

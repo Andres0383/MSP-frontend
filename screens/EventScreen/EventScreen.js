@@ -50,7 +50,7 @@ export default function EventScreen({ navigation }) {
       token: user.token,
       eventsId: event.eventId,
     };
-    fetch("https://msp-backend.vercel.app/events/participate", {
+    fetch("https://msp-backend-gold.vercel.app/events/participate", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -73,7 +73,7 @@ export default function EventScreen({ navigation }) {
       token: user.token,
       eventsId: event.eventId,
     };
-    fetch("https://msp-backend.vercel.app/events/", {
+    fetch("https://msp-backend-gold.vercel.app/events/", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -95,7 +95,7 @@ export default function EventScreen({ navigation }) {
       token: user.token,
       eventsId: event.eventId,
     };
-    fetch("https://msp-backend.vercel.app/events/participate", {
+    fetch("https://msp-backend-gold.vercel.app/events/participate", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -117,7 +117,7 @@ export default function EventScreen({ navigation }) {
       token: user.token,
       eventsId: event.eventId,
     };
-    fetch("https://msp-backend.vercel.app/events/favorites", {
+    fetch("https://msp-backend-gold.vercel.app/events/favorites", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -141,7 +141,7 @@ export default function EventScreen({ navigation }) {
       token: user.token,
       eventsId: event.eventId,
     };
-    fetch("https://msp-backend.vercel.app/events/favorites", {
+    fetch("https://msp-backend-gold.vercel.app/events/favorites", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -160,7 +160,7 @@ export default function EventScreen({ navigation }) {
   };
 
   // IS MY EVENT ? PARTICIPATE ? FAVORITE ?
-  fetch(`https://msp-backend.vercel.app/users/${user.token}`)
+  fetch(`https://msp-backend-gold.vercel.app/users/${user.token}`)
     .then((response) => response.json())
     .then((data) => {
       for (let i = 0; i < data.userInfo.events.length; i++) {

@@ -90,7 +90,7 @@ export default function EventScreen({ navigation }) {
       longitude: citiesData[0].longitude,
       address: citiesData[0].title,
     };
-    fetch("https://msp-backend.vercel.app/events/newevent", {
+    fetch("https://msp-backend-gold.vercel.app/events/newevent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

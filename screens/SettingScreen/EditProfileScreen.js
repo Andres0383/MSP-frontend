@@ -72,7 +72,7 @@ export default function QuizzScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          navigation.navigate("TabNavigator");
+          navigation.navigate("Settings");
         } else {
           Alert.alert("Error :", data.error, { cancelable: true });
         }

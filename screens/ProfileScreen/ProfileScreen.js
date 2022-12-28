@@ -14,7 +14,11 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faStar, faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faStar,
+  faPenToSquare,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { transferEvent } from "../../reducers/event";
 
@@ -38,21 +42,22 @@ export default function ProfileScreen({ navigation }) {
   // GET USER INFO FROM DATABASE
   useFocusEffect(
     useCallback(() => {
-    fetch(`https://msp-backend.vercel.app/users/${user.token}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setUserFavorite(data.userInfo.favorites)
-          setUserSports(data.userInfo.sport);
-          setUserDateBirth(data.userInfo.dateOfBirth);
-          setUserDescription(data.userInfo.description);
-          setUserLevel(data.userInfo.level);
-          setUserEvents(data.userInfo.events);
-          setUserParticipate(data.userInfo.participate);
-        }
-        setHasPermission(true);
-      });
-  }, []));
+      fetch(`msp-backend-gold.vercel.app/users/${user.token}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            setUserFavorite(data.userInfo.favorites);
+            setUserSports(data.userInfo.sport);
+            setUserDateBirth(data.userInfo.dateOfBirth);
+            setUserDescription(data.userInfo.description);
+            setUserLevel(data.userInfo.level);
+            setUserEvents(data.userInfo.events);
+            setUserParticipate(data.userInfo.participate);
+          }
+          setHasPermission(true);
+        });
+    }, [])
+  );
 
   if (!hasPermission) {
     return (
@@ -73,20 +78,34 @@ export default function ProfileScreen({ navigation }) {
 
   // MAP TO GET AND DISPLAY ALL THE USER FAVORITE
   const eachUserFavorite = userFavorite.map((favorite, i) => {
-    const transferEventData = {eventId: favorite._id, level: favorite.user[0].level, username: favorite.user[0].firstname, sport: favorite.sport, date: favorite.date.slice(5, 10), hour: favorite.hour.slice(11, 16), description: favorite.description, latitude: favorite.latitude, longitude: favorite.longitude, address: favorite.address}
+    const transferEventData = {
+      eventId: favorite._id,
+      level: favorite.user[0].level,
+      username: favorite.user[0].firstname,
+      sport: favorite.sport,
+      date: favorite.date.slice(5, 10),
+      hour: favorite.hour.slice(11, 16),
+      description: favorite.description,
+      latitude: favorite.latitude,
+      longitude: favorite.longitude,
+      address: favorite.address,
+    };
     const handleGoEvent = () => {
-      dispatch(transferEvent(transferEventData))
-      navigation.navigate('Event')
-      setFavoriteModal(!favoriteModal)
-    }
+      dispatch(transferEvent(transferEventData));
+      navigation.navigate("Event");
+      setFavoriteModal(!favoriteModal);
+    };
     return (
       <View key={i} style={styles.eachFavContainer}>
-      <TouchableOpacity key={i} onPress={() => handleGoEvent()}>
-      <Text key={i} style={styles.eachFavoriteText}>{favorite.sport} with {favorite.user[0].firstname}, {favorite.date.slice(5, 10)} at {favorite.hour.slice(11, 16)}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity key={i} onPress={() => handleGoEvent()}>
+          <Text key={i} style={styles.eachFavoriteText}>
+            {favorite.sport} with {favorite.user[0].firstname},{" "}
+            {favorite.date.slice(5, 10)} at {favorite.hour.slice(11, 16)}
+          </Text>
+        </TouchableOpacity>
       </View>
-    )
-  })
+    );
+  });
 
   // GET THE USER's AGE FOR HEADER
   const getAge = (stringDate) => {
@@ -111,8 +130,7 @@ export default function ProfileScreen({ navigation }) {
   // MODAL TO DISPLAY FAVORITES
   const showFavoriteModal = () => {
     setFavoriteModal(!favoriteModal);
-  }
-
+  };
 
   // SEND THE USER DESCRIPTION TO DB
   const sendDescription = () => {
@@ -120,7 +138,7 @@ export default function ProfileScreen({ navigation }) {
       token: user.token,
       description: userDescription,
     };
-    fetch("https://msp-backend.vercel.app/users/description", {
+    fetch("https://msp-backend-gold.vercel.app/users/description", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -223,27 +241,19 @@ export default function ProfileScreen({ navigation }) {
         </Modal>
         {/* MODAL TO DISPLAY FAVORITES */}
         <Modal visible={favoriteModal} animationType="fade" transparent>
-            <View style={styles.centeredView}>
-              <View style={styles.modalFavoriteView}>
-
+          <View style={styles.centeredView}>
+            <View style={styles.modalFavoriteView}>
               <View style={styles.xmarkContainer}>
                 <TouchableOpacity onPress={() => showFavoriteModal()}>
                   <FontAwesomeIcon icon={faXmark} size={26} />
                 </TouchableOpacity>
-
               </View>
 
-                <Text style={styles.textTitleSml}>
-                  Your favorites :
-                </Text>
+              <Text style={styles.textTitleSml}>Your favorites :</Text>
 
-                <View style={styles.favoritesListing}>
-                  {eachUserFavorite}
-                </View>
-
-                
-              </View>
+              <View style={styles.favoritesListing}>{eachUserFavorite}</View>
             </View>
+          </View>
         </Modal>
         {/* HEADER */}
         <View style={styles.headerContainer}>
@@ -275,7 +285,11 @@ export default function ProfileScreen({ navigation }) {
             style={styles.modifyBtn}
             onPress={() => showDescriptionModal()}
           >
-            <FontAwesomeIcon style={styles.textButton} icon={faPenToSquare} size={24}/>
+            <FontAwesomeIcon
+              style={styles.textButton}
+              icon={faPenToSquare}
+              size={24}
+            />
           </TouchableOpacity>
         </View>
         {/* MY SPORTS */}
@@ -286,28 +300,35 @@ export default function ProfileScreen({ navigation }) {
         {/* MY EVENTS */}
         <View style={styles.myEventContainer}>
           <Text style={styles.textTitle}>My events :</Text>
-          <ScrollView style={{width: '98%'}}>
-          <View style={styles.listOfEvents}>
+          <ScrollView style={{ width: "98%" }}>
+            <View style={styles.listOfEvents}>
               {eachUserEvent.length === 0 ? noEvents : eachUserEvent}
-          </View>
+            </View>
           </ScrollView>
         </View>
         {/* PARTICIPATE TO */}
         <View style={styles.eventContainer}>
           <Text style={styles.textTitle}>My participation :</Text>
-          <ScrollView style={{width: '98%'}}>
-          <View style={styles.listOfEvents}>
-            {eachUserParticipate.length === 0
-              ? noParticipate
-              : eachUserParticipate}
-          </View>
+          <ScrollView style={{ width: "98%" }}>
+            <View style={styles.listOfEvents}>
+              {eachUserParticipate.length === 0
+                ? noParticipate
+                : eachUserParticipate}
+            </View>
           </ScrollView>
         </View>
         {/* FAVORITES */}
         <View style={styles.favsContainer}>
           <Text style={styles.textTitle}>My Favorites :</Text>
-          <TouchableOpacity onPress={() => showFavoriteModal()} style={styles.favoriteBtn}>
-            <FontAwesomeIcon style={styles.textFavorite} icon={faStar} size={26}/>
+          <TouchableOpacity
+            onPress={() => showFavoriteModal()}
+            style={styles.favoriteBtn}
+          >
+            <FontAwesomeIcon
+              style={styles.textFavorite}
+              icon={faStar}
+              size={26}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -404,18 +425,16 @@ const styles = StyleSheet.create({
   },
   favoritesListing: {
     margin: 30,
-    width: '100%',
-    height: '10%',
-    justifyContent: 'center',
-    alignItems: 'center',
-
+    width: "100%",
+    height: "10%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   eachFavContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: '#E74C3C',
-    height: '80%',
+    borderBottomColor: "#E74C3C",
+    height: "80%",
     marginTop: 20,
-
   },
   eachFavoriteText: {
     fontSize: 15,
@@ -440,7 +459,7 @@ const styles = StyleSheet.create({
   image: {
     width: "43%",
     height: "100%",
-    borderRadius: "50%",
+    borderRadius: 50,
     marginRight: 8,
     backgroundColor: "orange",
   },
@@ -479,7 +498,7 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     width: "97%",
     height: "15%",
-    flexDirection: 'row',
+    flexDirection: "row",
     alignItems: "flex-start",
   },
   descriptionText: {
@@ -559,10 +578,10 @@ const styles = StyleSheet.create({
   },
   // FAVS
   favsContainer: {
-      width: "100%",
-      height: "7%",
-      flexDirection: 'row',
-      alignItems: 'center',
+    width: "100%",
+    height: "7%",
+    flexDirection: "row",
+    alignItems: "center",
   },
   favoriteBtn: {
     alignItems: "center",
