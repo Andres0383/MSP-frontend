@@ -13,6 +13,7 @@ import { faPerson, faPersonDress } from "@fortawesome/free-solid-svg-icons";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { SelectList } from "react-native-dropdown-select-list";
 import DatePicker from "@react-native-community/datetimepicker";
+
 import { useSelector } from "react-redux";
 import { height } from "@fortawesome/free-solid-svg-icons/faXmark";
 
@@ -26,6 +27,12 @@ export default function QuizzScreen({ navigation }) {
   const [mixed, setMixed] = useState("");
   const [changeColorSex, setChangeColorSex] = useState(false);
   const [changeColorMixed, setChangeColorMixed] = useState(false);
+
+  const [visible, setVisible] = useState(false);
+
+  const showPicker = () => {
+    setVisible(true);
+  };
 
   // FUNCTION FOR BUTTON SEX
   const handleSex = (sex) => {
@@ -148,20 +155,37 @@ export default function QuizzScreen({ navigation }) {
           <View style={styles.quizzContainer}>
             {/* DATE OF BIRTH SELECTION */}
             <View>
-              <Text style={styles.questionText}>
-                What is your date of birth ?
-              </Text>
-              <View style={styles.calendarContainer}>
-                <DatePicker
-                  style={styles.calendar}
-                  mode="date"
-                  value={dateBirth}
-                  maximumDate={new Date(2010, 1, 1)}
-                  minimumDate={new Date(1950, 1, 1)}
-                  textColor="#E74C3C"
-                  accentColor="#E74C3C"
-                  onChange={dateBirthSelected}
-                />
+              <View style={styles.dateBirth}>
+                <Text style={styles.questionText}>
+                  What is your date of birth ?
+                </Text>
+                <View style={styles.calendarContainer}>
+                  <TouchableOpacity
+                    onPress={() => showPicker()}
+                    style={{
+                      backgroundColor: "#E74C3C",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "20%",
+                      height: "30%",
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Text style={styles.textButton}>Birth</Text>
+                  </TouchableOpacity>
+                </View>
+                {visible && (
+                  <DatePicker
+                    style={styles.calendar}
+                    mode="spinner"
+                    value={dateBirth}
+                    maximumDate={new Date(2010, 1, 1)}
+                    minimumDate={new Date(1950, 1, 1)}
+                    textColor="#E74C3C"
+                    accentColor="#E74C3C"
+                    onChange={dateBirthSelected}
+                  />
+                )}
               </View>
             </View>
 
@@ -368,5 +392,9 @@ const styles = StyleSheet.create({
     color: "black",
     backgroundColor: "white",
     marginHorizontal: 20,
+  },
+  dateBirth: {
+    flexWrap: "wrap",
+    flexDirection: "row",
   },
 });

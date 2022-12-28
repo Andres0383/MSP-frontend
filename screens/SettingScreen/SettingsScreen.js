@@ -67,12 +67,9 @@ export default function SettingScreen({ navigation }) {
           <Text style={styles.logoutText}>LOGOUT</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.deleteBtn}
-          onPress={() => handleDeleteAccount()}
-        >
-          <Text style={styles.deleteText}>DELETE ACCOUNT</Text>
-        </TouchableOpacity>
+        <Text style={styles.deleteText} onPress={() => handleDeleteAccount()}>
+          DELETE ACCOUNT
+        </Text>
       </View>
     </ImageBackground>
   );
@@ -100,7 +97,7 @@ const styles = StyleSheet.create({
     height: "10%",
     backgroundColor: "#E74C3C",
     borderRadius: 20,
-    marginTop: 50,
+    marginTop: 480,
   },
   logoutText: {
     color: "#ffffff",
@@ -108,20 +105,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: "Poppins-Light",
   },
-  deleteBtn: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "80%",
-    height: "10%",
-    backgroundColor: "#E74C3C",
-    borderRadius: 20,
-    marginTop: 50,
-  },
+
   deleteText: {
-    color: "#ffffff",
+    color: "#E74C3C",
     fontWeight: "600",
+    textDecorationLine: "underline #E74C3C",
     fontSize: 25,
     fontFamily: "Poppins-Light",
+    marginTop: 60,
   },
   editBtn: {
     alignItems: "center",
