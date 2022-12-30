@@ -177,7 +177,8 @@ export default function QuizzScreen({ navigation }) {
                 <TouchableOpacity style={styles.dateofbirth}>
                   <Text style={styles.textButton} onPress={showDate}>
                     {`${("0" + dateBirth.getDate()).slice(-2)}/${(
-                      "0" + dateBirth.getMonth(+2)
+                      "0" +
+                      (dateBirth.getMonth() + 1)
                     ).slice(-2)}/${dateBirth.getFullYear()}`}
                   </Text>
                   {visible && (
