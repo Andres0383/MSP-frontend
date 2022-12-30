@@ -19,52 +19,22 @@ import { useSelector } from "react-redux";
 export default function QuizzScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
 
-  const [isMale, setIsMale] = useState("");
-  const [dateBirth, setDateBirth] = useState(new Date());
   const [sportPractice, setSportPractice] = useState([]);
   const [level, setLevel] = useState("");
   const [mixed, setMixed] = useState("");
-  const [changeColorSex, setChangeColorSex] = useState(false);
+
   const [changeColorMixed, setChangeColorMixed] = useState(false);
-
-  const [visible, setVisible] = useState(false);
-  const [mode, setMode] = useState("");
-
-  // FUNCTION FOR BUTTON SEX
-  const handleSex = (sex) => {
-    if (sex === "male") {
-      setIsMale("male");
-      setChangeColorSex(true);
-    } else if (sex === "female") {
-      setIsMale("female");
-      setChangeColorSex(false);
-    }
-  };
-
-  // FUNCTION FOR DATE SELECTION
-
-  const showPicker = () => {
-    setVisible(true);
-  };
-
-  const showDate = () => {
-    setMode("date");
-    showPicker();
-  };
-
-  const dateBirthSelected = (event, value) => {
-    const currentDate = value || dateBirth;
-    setVisible(false);
-    setDateBirth(currentDate);
-  };
+  const [changeColorOnly, setChangeColorOnly] = useState(false);
 
   // FUNCTION FOR MIXED SEX
   const handleMixed = (mix) => {
     if (mix === "mixed") {
       setMixed("mixed");
       setChangeColorMixed(true);
+      setChangeColorOnly(false);
     } else if (mix === "only") {
       setMixed("only");
+      setChangeColorOnly(true);
       setChangeColorMixed(false);
     }
   };
@@ -75,8 +45,7 @@ export default function QuizzScreen({ navigation }) {
       token: user.token,
       sport: sportPractice,
       level: level,
-      dateOfBirth: dateBirth,
-      sex: isMale,
+
       mixedSex: mixed,
     };
     fetch("https://msp-backend-gold.vercel.app/users/edit", {
@@ -88,9 +57,6 @@ export default function QuizzScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           navigation.navigate("Settings");
-          Alert.alert("your profile has been successfully updated", {
-            cancelable: true,
-          });
         } else {
           Alert.alert("Error :", data.error, { cancelable: true });
         }
@@ -100,7 +66,6 @@ export default function QuizzScreen({ navigation }) {
   const handleCancel = () => {
     navigation.navigate("Settings");
   };
-
   const data = [
     { key: "1", value: "Running" },
     { key: "2", value: "Hiking" },
@@ -124,76 +89,11 @@ export default function QuizzScreen({ navigation }) {
         </View>
 
         <View style={styles.subHeaderContainer}>
-          <Text style={styles.subHeaderText}>Welcome {user.firstname} !</Text>
+          <Text style={styles.subHeaderText}>Change your preference !</Text>
         </View>
 
-        {/* CHOICE OF SEX */}
         <ScrollView style={{ width: "95%" }}>
-          <View style={styles.sexContainer}>
-            <TouchableOpacity
-              onPress={() => handleSex("male")}
-              style={{
-                backgroundColor: changeColorSex ? "#E74C3C" : "grey",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 10,
-                marginTop: 10,
-                borderRadius: 100,
-              }}
-            >
-              <FontAwesomeIcon
-                style={styles.textButton}
-                icon={faPerson}
-                size={26}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => handleSex("female")}
-              style={{
-                backgroundColor: !changeColorSex ? "#E74C3C" : "grey",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 10,
-                marginTop: 10,
-                borderRadius: 100,
-              }}
-            >
-              <FontAwesomeIcon
-                style={styles.textButton}
-                icon={faPersonDress}
-                size={26}
-              />
-            </TouchableOpacity>
-          </View>
-
           <View style={styles.quizzContainer}>
-            {/* DATE OF BIRTH SELECTION */}
-            <View>
-              <View style={styles.dateBirth}>
-                <Text style={styles.questionText}>
-                  What is your date of birth ?
-                </Text>
-                <TouchableOpacity style={styles.dateofbirth}>
-                  <Text style={styles.textButton} onPress={showDate}>
-                    {`${("0" + dateBirth.getDate()).slice(-2)}/${(
-                      "0" + dateBirth.getMonth(+2)
-                    ).slice(-2)}/${dateBirth.getFullYear()}`}
-                  </Text>
-                  {visible && (
-                    <DateTimePicker
-                      style={styles.calendar}
-                      mode={mode}
-                      value={dateBirth}
-                      textColor="#E74C3C"
-                      accentColor="#E74C3C"
-                      onChange={dateBirthSelected}
-                    />
-                  )}
-                </TouchableOpacity>
-              </View>
-            </View>
-
             {/* SPORTS SELECTION */}
             <View style={styles.sectionContainer}>
               <Text style={styles.questionText}>
@@ -250,7 +150,7 @@ export default function QuizzScreen({ navigation }) {
                     width: "40%",
                     height: "90%",
                     borderRadius: 10,
-                    marginLeft: 10,
+                    marginLeft: 20,
                     marginTop: 10,
                   }}
                 >
@@ -260,13 +160,13 @@ export default function QuizzScreen({ navigation }) {
                 <TouchableOpacity
                   onPress={() => handleMixed("only")}
                   style={{
-                    backgroundColor: !changeColorMixed ? "#E74C3C" : "grey",
+                    backgroundColor: changeColorOnly ? "#E74C3C" : "grey",
                     alignItems: "center",
                     justifyContent: "center",
                     width: "40%",
                     height: "90%",
                     borderRadius: 10,
-                    marginLeft: 15,
+                    marginLeft: 20,
                     marginTop: 10,
                   }}
                 >
@@ -276,7 +176,7 @@ export default function QuizzScreen({ navigation }) {
               <View style={styles.goContainer}>
                 <TouchableOpacity
                   onPress={() => handleCancel()}
-                  style={styles.goButton}
+                  style={styles.cancelButton}
                 >
                   <Text style={styles.textButton}>CANCEL </Text>
                 </TouchableOpacity>
@@ -309,38 +209,29 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: "center",
     width: "100%",
-    alignItems: "flex-start",
+
     paddingLeft: 10,
   },
   subHeaderContainer: {
     width: "100%",
-    alignItems: "flex-start",
+    alignItems: "center",
     paddingLeft: 10,
     paddingTop: 10,
   },
-  sexContainer: {
-    flexDirection: "row",
-    width: "80%",
-    justifyContent: "space-around",
-    marginLeft: 50,
-    marginTop: 20,
-  },
+
   quizzContainer: {
-    marginTop: 20,
+    marginTop: 50,
     alignItems: "center",
   },
   sectionContainer: {
     marginVertical: 5,
+    alignItems: "center",
   },
   multipleListContainer: {
     width: "98%",
     marginTop: 10,
-    marginLeft: 50,
   },
-  calendarContainer: {
-    width: "100%",
-    alignItems: "center",
-  },
+
   mixedContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -349,17 +240,12 @@ const styles = StyleSheet.create({
   },
   goContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+
     height: "12%",
-    marginTop: 30,
+    marginTop: 110,
     marginBottom: 125,
-    marginLeft: 15,
   },
-  calendar: {
-    backgroundColor: "#E74C3C",
-    opacity: 0.9,
-    width: "40%",
-  },
+
   //   BUTTONS
   button: {
     alignItems: "center",
@@ -377,7 +263,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#E74C3C",
     borderRadius: 10,
     marginTop: 25,
-    marginRight: 15,
+    marginLeft: 20,
+  },
+  cancelButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "30%",
+    height: "100%",
+    backgroundColor: "#E74C3C",
+    borderRadius: 10,
+    marginTop: 25,
+    marginLeft: 12,
   },
   textButton: {
     color: "#ffffff",
@@ -389,7 +285,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 45,
     fontWeight: "700",
-    color: "white",
+    color: "#E74C3C",
     fontFamily: "Poppins-Bold",
     textShadowColor: "black",
     textShadowOffset: { width: -1, height: 1 },
@@ -398,7 +294,7 @@ const styles = StyleSheet.create({
   subHeaderText: {
     fontFamily: "Poppins-Medium",
     fontSize: 25,
-    color: "#E74C3C",
+    color: "black",
     backgroundColor: "white",
   },
   questionText: {
@@ -427,15 +323,5 @@ const styles = StyleSheet.create({
     color: "black",
     backgroundColor: "white",
     marginHorizontal: 20,
-  },
-  dateofbirth: {
-    backgroundColor: "#E74C3C",
-    width: 120,
-    height: 40,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 85,
-    marginTop: 10,
   },
 });

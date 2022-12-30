@@ -42,7 +42,7 @@ export default function ProfileScreen({ navigation }) {
   // GET USER INFO FROM DATABASE
   useFocusEffect(
     useCallback(() => {
-      fetch(`msp-backend-gold.vercel.app/users/${user.token}`)
+      fetch(`https://msp-backend-gold.vercel.app/users/${user.token}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {

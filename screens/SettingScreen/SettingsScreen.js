@@ -27,6 +27,7 @@ export default function SettingScreen({ navigation }) {
     const body = {
       token: user.token,
     };
+    console.log(handleDeleteAccount);
     fetch("https://msp-backend-gold.vercel.app/users/delete", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -34,11 +35,12 @@ export default function SettingScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data.result) {
+          navigation.navigate("Login");
           Alert.alert("Confirmation :", "Your account has been deleted", {
             cancelable: true,
           });
-          navigation.navigate("Login");
         }
       });
   };
@@ -57,7 +59,7 @@ export default function SettingScreen({ navigation }) {
           style={styles.editBtn}
           onPress={() => handleEditProfile()}
         >
-          <Text style={styles.editText}>EDIT YOUR PROFILE</Text>
+          <Text style={styles.editText}>EDIT YOUR PREFERENCE</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

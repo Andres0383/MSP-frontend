@@ -24,8 +24,11 @@ export default function QuizzScreen({ navigation }) {
   const [sportPractice, setSportPractice] = useState([]);
   const [level, setLevel] = useState("");
   const [mixed, setMixed] = useState("");
-  const [changeColorSex, setChangeColorSex] = useState(false);
+  const [changeColorSexMale, setChangeColorSexMale] = useState(false);
+  const [changeColorSexFemale, setChangeColorSexFemale] = useState(false);
+
   const [changeColorMixed, setChangeColorMixed] = useState(false);
+  const [changeColorOnly, setChangeColorOnly] = useState(false);
 
   const [visible, setVisible] = useState(false);
   const [mode, setMode] = useState("");
@@ -34,10 +37,12 @@ export default function QuizzScreen({ navigation }) {
   const handleSex = (sex) => {
     if (sex === "male") {
       setIsMale("male");
-      setChangeColorSex(true);
+      setChangeColorSexMale(true);
+      setChangeColorSexFemale(false);
     } else if (sex === "female") {
       setIsMale("female");
-      setChangeColorSex(false);
+      setChangeColorSexFemale(true);
+      setChangeColorSexMale(false);
     }
   };
 
@@ -63,8 +68,10 @@ export default function QuizzScreen({ navigation }) {
     if (mix === "mixed") {
       setMixed("mixed");
       setChangeColorMixed(true);
+      setChangeColorOnly(false);
     } else if (mix === "only") {
       setMixed("only");
+      setChangeColorOnly(true);
       setChangeColorMixed(false);
     }
   };
@@ -126,7 +133,7 @@ export default function QuizzScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => handleSex("male")}
               style={{
-                backgroundColor: changeColorSex ? "#E74C3C" : "grey",
+                backgroundColor: changeColorSexMale ? "#E74C3C" : "grey",
                 alignItems: "center",
                 justifyContent: "center",
                 padding: 10,
@@ -144,7 +151,7 @@ export default function QuizzScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => handleSex("female")}
               style={{
-                backgroundColor: !changeColorSex ? "#E74C3C" : "grey",
+                backgroundColor: changeColorSexFemale ? "#E74C3C" : "grey",
                 alignItems: "center",
                 justifyContent: "center",
                 padding: 10,
@@ -253,7 +260,7 @@ export default function QuizzScreen({ navigation }) {
                 <TouchableOpacity
                   onPress={() => handleMixed("only")}
                   style={{
-                    backgroundColor: !changeColorMixed ? "#E74C3C" : "grey",
+                    backgroundColor: changeColorOnly ? "#E74C3C" : "grey",
                     alignItems: "center",
                     justifyContent: "center",
                     width: "40%",
@@ -296,7 +303,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: "center",
     width: "100%",
-    alignItems: "flex-start",
+
     paddingLeft: 10,
   },
   subHeaderContainer: {
@@ -311,6 +318,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginLeft: 50,
     marginTop: 20,
+    alignItems: "center",
   },
   quizzContainer: {
     marginTop: 20,
@@ -318,12 +326,13 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginVertical: 5,
+    alignItems: "center",
   },
   multipleListContainer: {
     width: "98%",
     marginTop: 10,
-    marginLeft: 50,
   },
+
   calendarContainer: {
     width: "100%",
     alignItems: "center",
@@ -363,7 +372,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E74C3C",
     borderRadius: 10,
     marginTop: 25,
-    marginRight: 15,
+    marginRight: 10,
   },
   textButton: {
     color: "#ffffff",
@@ -375,7 +384,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 45,
     fontWeight: "700",
-    color: "white",
+    color: "#E74C3C",
     fontFamily: "Poppins-Bold",
     textShadowColor: "black",
     textShadowOffset: { width: -1, height: 1 },
@@ -384,7 +393,7 @@ const styles = StyleSheet.create({
   subHeaderText: {
     fontFamily: "Poppins-Medium",
     fontSize: 25,
-    color: "#E74C3C",
+    color: "black",
     backgroundColor: "white",
   },
   questionText: {
