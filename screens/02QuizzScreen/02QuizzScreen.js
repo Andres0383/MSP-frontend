@@ -30,15 +30,6 @@ export default function QuizzScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [mode, setMode] = useState("");
 
-  const showPicker = () => {
-    setVisible(true);
-  };
-
-  const showDate = () => {
-    setMode("date");
-    showPicker();
-  };
-
   // FUNCTION FOR BUTTON SEX
   const handleSex = (sex) => {
     if (sex === "male") {
@@ -51,6 +42,16 @@ export default function QuizzScreen({ navigation }) {
   };
 
   // FUNCTION FOR DATE SELECTION
+
+  const showPicker = () => {
+    setVisible(true);
+  };
+
+  const showDate = () => {
+    setMode("date");
+    showPicker();
+  };
+
   const dateBirthSelected = (event, value) => {
     const currentDate = value || dateBirth;
     setVisible(false);
@@ -213,7 +214,7 @@ export default function QuizzScreen({ navigation }) {
 
             {/* LEVEL SELECTION */}
             <View style={styles.sectionContainer}>
-              <Text style={styles.questionText}>What is your level ?</Text>
+              <Text style={styles.levelText}>What is your level ?</Text>
               <SelectList
                 placeholder="Select your level"
                 data={data2}
@@ -229,7 +230,7 @@ export default function QuizzScreen({ navigation }) {
 
             {/* MIXED SEX CHOICE */}
             <View style={styles.sectionContainer}>
-              <Text style={styles.questionText}>
+              <Text style={styles.mixedText}>
                 Sport's Pal from your sex only or mixed ?
               </Text>
               <View style={styles.mixedContainer}>
@@ -242,6 +243,8 @@ export default function QuizzScreen({ navigation }) {
                     width: "40%",
                     height: "90%",
                     borderRadius: 10,
+                    marginLeft: 20,
+                    marginTop: 10,
                   }}
                 >
                   <Text style={styles.textButton}>MIXED</Text>
@@ -256,6 +259,8 @@ export default function QuizzScreen({ navigation }) {
                     width: "40%",
                     height: "90%",
                     borderRadius: 10,
+                    marginLeft: 20,
+                    marginTop: 10,
                   }}
                 >
                   <Text style={styles.textButton}>ONLY</Text>
@@ -295,7 +300,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   subHeaderContainer: {
-    alignItems: "center",
     width: "100%",
     alignItems: "flex-start",
     paddingLeft: 10,
@@ -305,15 +309,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "80%",
     justifyContent: "space-around",
+    marginLeft: 50,
+    marginTop: 20,
   },
   quizzContainer: {
     marginTop: 20,
+    alignItems: "center",
   },
   sectionContainer: {
     marginVertical: 5,
   },
   multipleListContainer: {
     width: "98%",
+    marginTop: 10,
+    marginLeft: 50,
   },
   calendarContainer: {
     width: "100%",
@@ -353,6 +362,8 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#E74C3C",
     borderRadius: 10,
+    marginTop: 25,
+    marginRight: 15,
   },
   textButton: {
     color: "#ffffff",
@@ -381,7 +392,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "black",
     backgroundColor: "white",
-    marginTop: 15,
+    marginTop: 10,
+  },
+  levelText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 20,
+    color: "black",
+    backgroundColor: "white",
+    marginBottom: 10,
+  },
+  mixedText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 20,
+    color: "black",
+    backgroundColor: "white",
   },
   textEnd: {
     fontFamily: "Poppins-Light",
@@ -397,7 +421,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 140,
-    marginTop: 15,
+    marginLeft: 85,
+    marginTop: 10,
   },
 });
