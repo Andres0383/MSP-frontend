@@ -12,10 +12,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPerson, faPersonDress } from "@fortawesome/free-solid-svg-icons";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { SelectList } from "react-native-dropdown-select-list";
-import DatePicker from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { useSelector } from "react-redux";
-import { height } from "@fortawesome/free-solid-svg-icons/faXmark";
 
 export default function QuizzScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
@@ -29,9 +28,15 @@ export default function QuizzScreen({ navigation }) {
   const [changeColorMixed, setChangeColorMixed] = useState(false);
 
   const [visible, setVisible] = useState(false);
+  const [mode, setMode] = useState("");
 
   const showPicker = () => {
     setVisible(true);
+  };
+
+  const showDate = () => {
+    setMode("date");
+    showPicker();
   };
 
   // FUNCTION FOR BUTTON SEX
@@ -47,7 +52,9 @@ export default function QuizzScreen({ navigation }) {
 
   // FUNCTION FOR DATE SELECTION
   const dateBirthSelected = (event, value) => {
-    setDateBirth(value);
+    const currentDate = value || dateBirth;
+    setVisible(false);
+    setDateBirth(currentDate);
   };
 
   // FUNCTION FOR MIXED SEX
@@ -159,33 +166,23 @@ export default function QuizzScreen({ navigation }) {
                 <Text style={styles.questionText}>
                   What is your date of birth ?
                 </Text>
-                <View style={styles.calendarContainer}>
-                  <TouchableOpacity
-                    onPress={() => showPicker()}
-                    style={{
-                      backgroundColor: "#E74C3C",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "20%",
-                      height: "30%",
-                      borderRadius: 10,
-                    }}
-                  >
-                    <Text style={styles.textButton}>Birth</Text>
-                  </TouchableOpacity>
-                </View>
-                {visible && (
-                  <DatePicker
-                    style={styles.calendar}
-                    mode="spinner"
-                    value={dateBirth}
-                    maximumDate={new Date(2010, 1, 1)}
-                    minimumDate={new Date(1950, 1, 1)}
-                    textColor="#E74C3C"
-                    accentColor="#E74C3C"
-                    onChange={dateBirthSelected}
-                  />
-                )}
+                <TouchableOpacity style={styles.dateofbirth}>
+                  <Text style={styles.textButton} onPress={showDate}>
+                    {`${("0" + dateBirth.getDate()).slice(-2)}/${(
+                      "0" + dateBirth.getMonth(+2)
+                    ).slice(-2)}/${dateBirth.getFullYear()}`}
+                  </Text>
+                  {visible && (
+                    <DateTimePicker
+                      style={styles.calendar}
+                      mode={mode}
+                      value={dateBirth}
+                      textColor="#E74C3C"
+                      accentColor="#E74C3C"
+                      onChange={dateBirthSelected}
+                    />
+                  )}
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -393,8 +390,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginHorizontal: 20,
   },
-  dateBirth: {
-    flexWrap: "wrap",
-    flexDirection: "row",
+  dateofbirth: {
+    backgroundColor: "#E74C3C",
+    width: 120,
+    height: 40,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 140,
+    marginTop: 15,
   },
 });

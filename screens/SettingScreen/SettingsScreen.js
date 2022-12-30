@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     height: "10%",
     backgroundColor: "#E74C3C",
     borderRadius: 20,
-    marginTop: 480,
+    marginTop: 500,
   },
   logoutText: {
     color: "#ffffff",
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline #E74C3C",
     fontSize: 25,
     fontFamily: "Poppins-Light",
-    marginTop: 60,
+    marginTop: 30,
   },
   editBtn: {
     alignItems: "center",
