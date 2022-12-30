@@ -12,9 +12,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPerson, faPersonDress } from "@fortawesome/free-solid-svg-icons";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { SelectList } from "react-native-dropdown-select-list";
-import DatePicker from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 import { useSelector } from "react-redux";
-import { height } from "@fortawesome/free-solid-svg-icons/faXmark";
 
 export default function QuizzScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
@@ -26,6 +26,9 @@ export default function QuizzScreen({ navigation }) {
   const [mixed, setMixed] = useState("");
   const [changeColorSex, setChangeColorSex] = useState(false);
   const [changeColorMixed, setChangeColorMixed] = useState(false);
+
+  const [visible, setVisible] = useState(false);
+  const [mode, setMode] = useState("");
 
   // FUNCTION FOR BUTTON SEX
   const handleSex = (sex) => {
@@ -39,8 +42,20 @@ export default function QuizzScreen({ navigation }) {
   };
 
   // FUNCTION FOR DATE SELECTION
+
+  const showPicker = () => {
+    setVisible(true);
+  };
+
+  const showDate = () => {
+    setMode("date");
+    showPicker();
+  };
+
   const dateBirthSelected = (event, value) => {
-    setDateBirth(value);
+    const currentDate = value || dateBirth;
+    setVisible(false);
+    setDateBirth(currentDate);
   };
 
   // FUNCTION FOR MIXED SEX
@@ -64,7 +79,7 @@ export default function QuizzScreen({ navigation }) {
       sex: isMale,
       mixedSex: mixed,
     };
-    fetch("https://msp-backend-gold.vercel.app/users/update", {
+    fetch("https://msp-backend-gold.vercel.app/users/edit", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -73,10 +88,17 @@ export default function QuizzScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           navigation.navigate("Settings");
+          Alert.alert("your profile has been successfully updated", {
+            cancelable: true,
+          });
         } else {
           Alert.alert("Error :", data.error, { cancelable: true });
         }
       });
+  };
+
+  const handleCancel = () => {
+    navigation.navigate("Settings");
   };
 
   const data = [
@@ -148,20 +170,27 @@ export default function QuizzScreen({ navigation }) {
           <View style={styles.quizzContainer}>
             {/* DATE OF BIRTH SELECTION */}
             <View>
-              <Text style={styles.questionText}>
-                What is your date of birth ?
-              </Text>
-              <View style={styles.calendarContainer}>
-                <DatePicker
-                  style={styles.calendar}
-                  mode="date"
-                  value={dateBirth}
-                  maximumDate={new Date(2010, 1, 1)}
-                  minimumDate={new Date(1950, 1, 1)}
-                  textColor="#E74C3C"
-                  accentColor="#E74C3C"
-                  onChange={dateBirthSelected}
-                />
+              <View style={styles.dateBirth}>
+                <Text style={styles.questionText}>
+                  What is your date of birth ?
+                </Text>
+                <TouchableOpacity style={styles.dateofbirth}>
+                  <Text style={styles.textButton} onPress={showDate}>
+                    {`${("0" + dateBirth.getDate()).slice(-2)}/${(
+                      "0" + dateBirth.getMonth(+2)
+                    ).slice(-2)}/${dateBirth.getFullYear()}`}
+                  </Text>
+                  {visible && (
+                    <DateTimePicker
+                      style={styles.calendar}
+                      mode={mode}
+                      value={dateBirth}
+                      textColor="#E74C3C"
+                      accentColor="#E74C3C"
+                      onChange={dateBirthSelected}
+                    />
+                  )}
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -192,7 +221,7 @@ export default function QuizzScreen({ navigation }) {
 
             {/* LEVEL SELECTION */}
             <View style={styles.sectionContainer}>
-              <Text style={styles.questionText}>What is your level ?</Text>
+              <Text style={styles.levelText}>What is your level ?</Text>
               <SelectList
                 placeholder="Select your level"
                 data={data2}
@@ -208,7 +237,7 @@ export default function QuizzScreen({ navigation }) {
 
             {/* MIXED SEX CHOICE */}
             <View style={styles.sectionContainer}>
-              <Text style={styles.questionText}>
+              <Text style={styles.mixedText}>
                 Sport's Pal from your sex only or mixed ?
               </Text>
               <View style={styles.mixedContainer}>
@@ -221,6 +250,8 @@ export default function QuizzScreen({ navigation }) {
                     width: "40%",
                     height: "90%",
                     borderRadius: 10,
+                    marginLeft: 10,
+                    marginTop: 10,
                   }}
                 >
                   <Text style={styles.textButton}>MIXED</Text>
@@ -235,6 +266,8 @@ export default function QuizzScreen({ navigation }) {
                     width: "40%",
                     height: "90%",
                     borderRadius: 10,
+                    marginLeft: 15,
+                    marginTop: 10,
                   }}
                 >
                   <Text style={styles.textButton}>ONLY</Text>
@@ -242,10 +275,16 @@ export default function QuizzScreen({ navigation }) {
               </View>
               <View style={styles.goContainer}>
                 <TouchableOpacity
+                  onPress={() => handleCancel()}
+                  style={styles.goButton}
+                >
+                  <Text style={styles.textButton}>CANCEL </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => handleGo()}
                   style={styles.goButton}
                 >
-                  <Text style={styles.textButton}>GO ! </Text>
+                  <Text style={styles.textButton}>OK </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -274,7 +313,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   subHeaderContainer: {
-    alignItems: "center",
     width: "100%",
     alignItems: "flex-start",
     paddingLeft: 10,
@@ -284,15 +322,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "80%",
     justifyContent: "space-around",
+    marginLeft: 50,
+    marginTop: 20,
   },
   quizzContainer: {
     marginTop: 20,
+    alignItems: "center",
   },
   sectionContainer: {
     marginVertical: 5,
   },
   multipleListContainer: {
     width: "98%",
+    marginTop: 10,
+    marginLeft: 50,
   },
   calendarContainer: {
     width: "100%",
@@ -306,10 +349,11 @@ const styles = StyleSheet.create({
   },
   goContainer: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-around",
     height: "12%",
     marginTop: 30,
     marginBottom: 125,
+    marginLeft: 15,
   },
   calendar: {
     backgroundColor: "#E74C3C",
@@ -332,6 +376,8 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#E74C3C",
     borderRadius: 10,
+    marginTop: 25,
+    marginRight: 15,
   },
   textButton: {
     color: "#ffffff",
@@ -360,7 +406,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "black",
     backgroundColor: "white",
-    marginTop: 15,
+    marginTop: 10,
+  },
+  levelText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 20,
+    color: "black",
+    backgroundColor: "white",
+    marginBottom: 10,
+  },
+  mixedText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 20,
+    color: "black",
+    backgroundColor: "white",
   },
   textEnd: {
     fontFamily: "Poppins-Light",
@@ -368,5 +427,15 @@ const styles = StyleSheet.create({
     color: "black",
     backgroundColor: "white",
     marginHorizontal: 20,
+  },
+  dateofbirth: {
+    backgroundColor: "#E74C3C",
+    width: 120,
+    height: 40,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 85,
+    marginTop: 10,
   },
 });
