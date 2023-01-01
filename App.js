@@ -17,7 +17,8 @@ import MyEventScreen from "./screens/MyEventScreen/MyEventScreen";
 import MessageScreen from "./screens/MessagesScreen/MessagesScreen";
 import SettingsScreen from "./screens/SettingScreen/SettingsScreen";
 import UserScreen from "./screens/ProfileScreen/UserScreen";
-import EditProfileScreen from "./screens/SettingScreen/EditProfileScreen";
+import EditPreferenceScreen from "./screens/SettingScreen/EditPreferenceScreen";
+
 import { useCallback } from "react";
 import { Text } from "react-native";
 // REDUCERS
@@ -76,7 +77,7 @@ const HomeNavigator = () => {
       <Stack.Screen name="Event" component={EventScreen} />
       <Stack.Screen name="MyEvent" component={MyEventScreen} />
       <Stack.Screen name="UserScreen" component={UserScreen} />
-      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="EditPreference" component={EditPreferenceScreen} />
     </Stack.Navigator>
   );
 };

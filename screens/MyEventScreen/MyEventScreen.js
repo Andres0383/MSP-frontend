@@ -42,6 +42,9 @@ export default function EventScreen({ navigation }) {
   const [hourEvent, setHourEvent] = useState(new Date());
   const [eventDescription, setEventDescription] = useState("");
 
+  const [dateIsVisible, setDateIsVisible] = useState(false);
+  const [timeIsVisible, setTimeIsVisible] = useState(false);
+
   // PRECEDENT BUTTON
   const handlePrevious = () => {
     navigation.navigate("HomeNavigator");
@@ -133,8 +136,8 @@ export default function EventScreen({ navigation }) {
       source={require("../../assets/background.jpg")}
     >
       <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "position" : "height"}
+        style={{ flex: 1, justifyContent: "flex-end" }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => handlePrevious()}>
@@ -165,30 +168,34 @@ export default function EventScreen({ navigation }) {
         {/* DATE SELECTION */}
         <View style={styles.sectionContainer}>
           <Text style={styles.questionText}>Select a date</Text>
-          <DatePicker
-            style={styles.calendar}
-            mode="date"
-            value={dateEvent}
-            minimumDate={new Date()}
-            textColor="#E74C3C"
-            accentColor="#E74C3C"
-            onChange={dateEventSelected}
-            format="hh:mm"
-          />
+          {dateIsVisible && (
+            <DatePicker
+              style={styles.calendar}
+              mode="date"
+              value={dateEvent}
+              minimumDate={new Date()}
+              textColor="#E74C3C"
+              accentColor="#E74C3C"
+              onChange={dateEventSelected}
+              format="hh:mm"
+            />
+          )}
         </View>
 
         {/* HOUR SELECTION */}
         <View style={styles.sectionContainer}>
           <Text style={styles.questionText}>Select an hour</Text>
-          <DatePicker
-            style={styles.hour}
-            mode="time"
-            value={hourEvent}
-            onChange={hourEventSelected}
-            textColor="#E74C3C"
-            accentColor="#E74C3C"
-            minuteInterval={10}
-          />
+          {timeIsVisible && (
+            <DatePicker
+              style={styles.hour}
+              mode="time"
+              value={hourEvent}
+              onChange={hourEventSelected}
+              textColor="#E74C3C"
+              accentColor="#E74C3C"
+              minuteInterval={10}
+            />
+          )}
         </View>
 
         {/* EVENT DESCRIPTION */}

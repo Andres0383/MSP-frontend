@@ -33,7 +33,7 @@ export default function LoginScreen({ navigation }) {
   const [signinEmailError, setsigninEmailError] = useState(false);
   const [signupEmailError, setsignupEmailError] = useState(false);
 
-  const [wrongPassword, setWrongPassword] = useState(false);
+  const [wrongPassword, setWrongPassword] = useState("");
 
   const [isSecure, setIsSecure] = useState(false);
   const [signinPasswordVisible, setSigninPasswordVisible] = useState(false);
@@ -107,6 +107,8 @@ export default function LoginScreen({ navigation }) {
             setSignInPassword("");
             setSignInModal(!signInModal);
             navigation.navigate("TabNavigator");
+          } else {
+            setWrongPassword(data.error);
           }
         });
     } else {
@@ -208,6 +210,7 @@ export default function LoginScreen({ navigation }) {
                     Invalid email or wrong password
                   </Text>
                 )}
+                <Text style={styles.error}> {wrongPassword}</Text>
               </View>
             </View>
           </View>
@@ -435,6 +438,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 8,
+
     width: "80%",
     marginTop: 10,
     backgroundColor: "#E74C3C",

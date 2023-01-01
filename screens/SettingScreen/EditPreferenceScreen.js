@@ -8,11 +8,8 @@ import {
   ScrollView,
 } from "react-native";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPerson, faPersonDress } from "@fortawesome/free-solid-svg-icons";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { SelectList } from "react-native-dropdown-select-list";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { useSelector } from "react-redux";
 
