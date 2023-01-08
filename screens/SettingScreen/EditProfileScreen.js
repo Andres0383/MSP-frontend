@@ -86,7 +86,7 @@ export default function QuizzScreen({ navigation }) {
         </View>
 
         <View style={styles.subHeaderContainer}>
-          <Text style={styles.subHeaderText}>Edit your preference !</Text>
+          <Text style={styles.subHeaderText}>Edit your profile !</Text>
         </View>
 
         <ScrollView style={{ width: "95%" }}>

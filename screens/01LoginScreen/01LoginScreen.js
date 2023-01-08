@@ -34,6 +34,7 @@ export default function LoginScreen({ navigation }) {
   const [signupEmailError, setsignupEmailError] = useState(false);
 
   const [wrongPassword, setWrongPassword] = useState("");
+  const [userAlreadyExist, setUserAlreadyExist] = useState("");
 
   const [isSecure, setIsSecure] = useState(false);
   const [signinPasswordVisible, setSigninPasswordVisible] = useState(false);
@@ -142,6 +143,8 @@ export default function LoginScreen({ navigation }) {
             setSignUpPassword("");
             navigation.navigate("Quizz");
             setSignUpModal(!signUpModal);
+          } else {
+            setUserAlreadyExist(data.error);
           }
         });
     } else {
@@ -282,6 +285,7 @@ export default function LoginScreen({ navigation }) {
                 {signupEmailError && (
                   <Text style={styles.error}>Invalid email address</Text>
                 )}
+                <Text style={styles.error}>{userAlreadyExist}</Text>
               </View>
             </View>
           </View>

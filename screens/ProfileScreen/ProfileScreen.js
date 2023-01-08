@@ -280,17 +280,12 @@ export default function ProfileScreen({ navigation }) {
         </View>
         {/* DESCRIPTION */}
         <View style={styles.descriptionContainer}>
-          <Text style={styles.descriptionText}>{userDescription}</Text>
-          <TouchableOpacity
-            style={styles.modifyBtn}
+          <Text
+            style={styles.descriptionText}
             onPress={() => showDescriptionModal()}
           >
-            <FontAwesomeIcon
-              style={styles.textButton}
-              icon={faPenToSquare}
-              size={24}
-            />
-          </TouchableOpacity>
+            {userDescription}
+          </Text>
         </View>
         {/* MY SPORTS */}
         <View style={styles.sportContainer}>
@@ -496,10 +491,11 @@ const styles = StyleSheet.create({
   },
   // DESCRIPTION
   descriptionContainer: {
-    width: "97%",
-    height: "15%",
+    width: "100%",
+    height: "13%",
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
   },
   descriptionText: {
     width: 330,
@@ -512,15 +508,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     fontFamily: "Poppins-Regular",
   },
-  modifyBtn: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 4,
-    width: "10%",
-    height: 40,
-    backgroundColor: "#E74C3C",
-    borderRadius: 10,
-  },
+
   textButton: {
     color: "#ffffff",
     height: 30,
@@ -537,7 +525,7 @@ const styles = StyleSheet.create({
   },
   mySports: {
     flexDirection: "row",
-    width: "100%",
+    width: "90%",
     justifyContent: "center",
     flexWrap: "wrap",
   },
@@ -556,6 +544,7 @@ const styles = StyleSheet.create({
   myEventContainer: {
     width: "100%",
     height: "18%",
+    marginTop: "5%",
   },
   eventContainer: {
     width: "100%",

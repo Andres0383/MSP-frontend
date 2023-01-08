@@ -176,7 +176,7 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.image}></View>
               <View style={styles.userInfo}>
                 <Text style={styles.textsmallname}>{user.firstname}</Text>
-                <Text style={styles.textsmallname}>Nice</Text>
+                <Text style={styles.textsmallname}></Text>
               </View>
             </View>
           </TouchableOpacity>
